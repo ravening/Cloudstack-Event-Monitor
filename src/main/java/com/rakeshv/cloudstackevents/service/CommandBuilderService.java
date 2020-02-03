@@ -4,6 +4,7 @@ import com.rakeshv.cloudstackevents.models.CloudstackCommand;
 import com.rakeshv.cloudstackevents.models.CloudstackHandle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +27,17 @@ public class CommandBuilderService {
     private CloudstackApiService cloudstackApiService;
     @Autowired
     private Environment environment;
-
-    private static final String USA = "usa";
-    private static final String EUROPE = "europe";
-    private static final String ASIA = "asia";
+    @Value("${cloudstack.platforms}")
+    private String platformsList;
 
     public HashMap<String, CloudstackHandle> platformMap;
     List<Callable<String>> callableList = new ArrayList<>();
-    static String[] platforms = new String[]{USA, EUROPE, ASIA};
-    static final int NUMBER_OF_THREADS = platforms.length;
+    String[] platforms;
 
     @PostConstruct
     private void constructHandlers() {
         platformMap = new HashMap<>();
-
+        platforms = platformsList.split(",");
         for (String platform : platforms) {
             String url = environment.getProperty(platform + ".url");
             String apiKey = environment.getProperty(platform + ".apiKey");
@@ -64,6 +62,7 @@ public class CommandBuilderService {
 
     public Map<String, String> executeCommand(String command, HashMap<String,String> parameters) {
         Map<String, String> resultMap = new HashMap<>();
+        int NUMBER_OF_THREADS = platforms.length;
         callableList = Arrays.asList(platforms)
                 .stream()
                 .parallel()

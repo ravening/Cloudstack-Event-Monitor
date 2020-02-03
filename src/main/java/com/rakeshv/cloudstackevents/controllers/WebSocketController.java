@@ -47,7 +47,7 @@ public class WebSocketController {
     }
 
     @RequestMapping("/test")
-    public String index(final Model model) throws IOException {
+    public String index(final Model model) {
         return "index";
     }
 }
