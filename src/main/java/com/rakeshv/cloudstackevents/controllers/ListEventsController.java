@@ -36,7 +36,6 @@ public class ListEventsController {
     public ResponseEntity<List<String>> listEvents() throws IOException {
         Map<String, String> result = cloudstackEventService.listEvents();
         List<Event> eventList = new ArrayList<>();
-        List<Alert> alertList = new ArrayList<>();
         List<String> resultList = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         for (String key : result.keySet()) {
@@ -56,7 +55,6 @@ public class ListEventsController {
 
     @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Alert> listAlertsStream() throws IOException {
-        Flux<Alert> flux = Flux.fromIterable(allAlerts);
-        return flux;
+        return Flux.fromIterable(allAlerts);
     }
 }
