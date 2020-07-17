@@ -34,7 +34,7 @@ public class ElasticSearchInitializer {
                         log.error("Index doesnt exist");
                         return createIndex();
                     } else {
-                        log.info("Indes DOES exist");
+                        log.info("Index already exist");
                     }
                     return Mono.empty();
                 }).block();

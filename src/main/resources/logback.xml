@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <property name="HOME_LOG" value="/var/tmp"/>
+    <property name="HOME_LOG" value="/var/log"/>
 
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${HOME_LOG}/cloudstack_stats.log</file>
+        <file>${HOME_LOG}/cloudstack_events.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${HOME_LOG}/archived/hypervisor-upgrade.%d{yyyy-MM-dd}.%i.log</fileNamePattern>

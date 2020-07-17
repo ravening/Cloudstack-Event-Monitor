@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -96,9 +97,11 @@ public class SsePushNotificationService {
                         elasticsearchLog.setUsername(event.getUsername());
                         elasticsearchLog.setPlatform(key);
                         elasticsearchLog.setTimestamp(event.getCreated());
-                        elasticsearchLogRepository.save(elasticsearchLog).subscribe();
+                        elasticsearchLog.setId(UUID.randomUUID().toString());
+                        elasticsearchLogRepository.save(elasticsearchLog)
+                                .subscribe(entry -> log.info("{}", entry),
+                                        error -> log.error("Error: {}", error.getMessage()));
                         resultList.add(output);
-                        log.error("{}", output);
                     }
 
                 });

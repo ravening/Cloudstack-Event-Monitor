@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -63,8 +64,10 @@ public class CloudstackAlertService {
                             elasticsearchLog.setName(alert.getName());
                             elasticsearchLog.setTimestamp(alert.getSent());
                             elasticsearchLog.setPlatform(key);
-                            elasticsearchLogRepository.save(elasticsearchLog).subscribe();
-                            log.error("PLATFORM: " + key + " " + alert);
+                            elasticsearchLog.setId(UUID.randomUUID().toString());
+                            elasticsearchLogRepository.save(elasticsearchLog)
+                                    .subscribe(entry -> log.info("{}", entry),
+                                            error -> log.error("Error: {}", error.getMessage()));
                         }
 
                     }
